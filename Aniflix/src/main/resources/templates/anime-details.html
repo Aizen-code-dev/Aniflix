@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${anime.title} + ' - HiAnime'">Anime Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/" class="logo">HiAnime</a>
+        <form th:action="@{/search}" method="get">
+            <input type="text" name="query" placeholder="Search anime...">
+            <button type="submit">Search</button>
+        </form>
+    </nav>
+</header>
+
+<main class="anime-details">
+    <div class="anime-header">
+        <img th:src="${anime.imageUrl}" alt="Anime Image">
+        <div>
+            <h1 th:text="${anime.title}"></h1>
+            <p><strong>Score:</strong> <span th:text="${anime.score}"></span></p>
+            <p><strong>Status:</strong> <span th:text="${anime.status}"></span></p>
+            <p><strong>Episodes:</strong> <span th:text="${anime.episodes}"></span></p>
+            <p><strong>Genres:</strong>
+                <span th:each="g : ${anime.genres}" th:text="${g.name + ', '}" />
+            </p>
+            <a th:href="${anime.trailer != null ? anime.trailer.url : '#'}" target="_blank" class="watch-btn">Watch Trailer</a>
+        </div>
+    </div>
+
+    <div class="anime-synopsis">
+        <h2>Synopsis</h2>
+        <p th:text="${anime.synopsis}"></p>
+    </div>
+
+    <div class="anime-episodes">
+        <h2>Episodes</h2>
+        <ul>
+            <li th:each="ep : ${episodes}">
+                <strong th:text="'Episode ' + ${ep.mal_id} + ': ' + ${ep.title}"></strong>
+                <span th:if="${ep.title_japanese != null}" th:text="' (' + ${ep.title_japanese} + ')'"></span>
+                <p th:if="${ep.synopsis != null}" th:text="${ep.synopsis}"></p>
+            </li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>
